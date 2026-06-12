@@ -4,37 +4,37 @@ const btnRestart = document.getElementById('btn-restart');
 const displayMessage = document.getElementById('message');
 const displayAttempts = document.getElementById('attempts');
 
-// A porta 8081 é onde o .NET será exposto pelo Docker
 const API_URL = 'http://localhost:8081/api/game'; 
 
 async function checkTip() {
     const guess = Number(inputGuess.value);
 
-    if (!palpite || palpite < 1 || palpite > 100) {
+    if (!guess || guess < 1 || guess > 100) {
         displayMessage.textContent = "Insira um número entre 1 e 100.";
-        displayMessage.style.color = "#f9e2af"; // Amarelo aviso
+        displayMessage.style.color = "#f9e2af"; 
         return;
     }
 
     try {
-        const response = await fetch(`${API_URL}/tentativa`, {
+        const response = await fetch(`${API_URL}/attempt`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ guess: guess })
+            // Envia o JSON { "guess": valor } exatamente como o Record do C# espera
+            body: JSON.stringify({ guess: guess }) 
         });
         
         const data = await response.json();
 
-        displayAttempts.textContent = data.tentativas;
-        displayMessage.textContent = data.mensagem;
+        displayAttempts.textContent = data.attempts;
+        displayMessage.textContent = data.message;
 
-        if (data.status === "sucesso") {
-            displayMessage.style.color = "#a6e3a1"; // Verde sucesso
+        if (data.status === "success") {
+            displayMessage.style.color = "#a6e3a1"
             btnAttempt.disabled = true;
             inputGuess.disabled = true;
             btnRestart.classList.remove('hidden');
         } else {
-            displayMessage.style.color = "#f38ba8"; // Vermelho erro
+            displayMessage.style.color = "#f38ba8";
         }
     } catch (error) {
         displayMessage.textContent = "Erro ao conectar com a API .NET!";
@@ -42,7 +42,7 @@ async function checkTip() {
     }
     
     inputGuess.value = '';
-    inputTip.focus();
+    inputGuess.focus();
 }
 
 async function restartGame() {
@@ -51,12 +51,12 @@ async function restartGame() {
     displayAttempts.textContent = "0";
     displayMessage.textContent = "";
     btnAttempt.disabled = false;
-    inputPalpite.disabled = false;
-    inputTip.value = '';
+    inputGuess.disabled = false;
+    inputGuess.value = '';
     btnRestart.classList.add('hidden');
-    inputTip.focus();
+    inputGuess.focus();
 }
 
 btnAttempt.addEventListener('click', checkTip);
-inputTip.addEventListener('keypress', e => { if (e.key === 'Enter') checkTip(); });
+inputGuess.addEventListener('keypress', e => { if (e.key === 'Enter') checkTip(); });
 btnRestart.addEventListener('click', restartGame);
