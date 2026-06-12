@@ -59,23 +59,3 @@ Em vez de uma página estática, foi desenvolvido um **Jogo da Adivinhação** d
     Frontend (Apache): http://localhost:8080
 
     (A API estará rodando internamente na porta 8081)
-
-## 📂 Estrutura do Projeto
-
-A organização dos diretórios reflete a separação entre os serviços:
-
-📦 desafio-docker-adivinhacao
- ┣ 📂 assets                  # Território do Apache (Frontend)
- ┃ ┣ 📂 css
- ┃ ┃ ┗ 📜 style.css
- ┃ ┣ 📂 js
- ┃ ┃ ┗ 📜 script.js
- ┃ ┗ 📜 index.html
- ┣ 📂 GuessNumberGame         # Território do .NET (Backend)
- ┃ ┣ 📂 Controllers
- ┃ ┃ ┗ 📜 GameController.cs
- ┃ ┣ 📜 Dockerfile            # Receita de build da API
- ┃ ┣ 📜 Program.cs            # Ponto de entrada e configuração do CORS
- ┃ ┗ 📜 GuessNumberGame.csproj
- ┣ 📜 docker-compose.yml      # Orquestrador dos containers
- ┗ 📜 .gitignore
